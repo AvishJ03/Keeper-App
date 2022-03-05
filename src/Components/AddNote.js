@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import AddIcon from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
+import Zoom from "@mui/material/Zoom";
 
 function AddNote(props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isOpen, setOpen] = useState(false);
 
   function addTitle(event) {
     const newTitle = event.target.value;
@@ -11,6 +15,9 @@ function AddNote(props) {
   function addContent(event) {
     const newContent = event.target.value;
     setContent(newContent);
+  }
+  function changeOpen() {
+    setOpen(true);
   }
 
   function submitNote(event) {
@@ -22,21 +29,28 @@ function AddNote(props) {
 
   return (
     <div>
-      <form>
-        <input
-          name="title"
-          placeholder="Title"
-          value={title}
-          onChange={addTitle}
-        />
+      <form className="create-note">
+        {isOpen && (
+          <input
+            name="title"
+            placeholder="Title"
+            value={title}
+            onChange={addTitle}
+          />
+        )}
         <textarea
           name="content"
           placeholder="Take a note..."
-          rows="3"
+          rows={isOpen ? 3 : 1}
           value={content}
           onChange={addContent}
+          onClick={changeOpen}
         />
-        <button onClick={submitNote}>Add</button>
+        <Zoom in={isOpen}>
+          <Fab onClick={submitNote}>
+            <AddIcon />
+          </Fab>
+        </Zoom>
       </form>
     </div>
   );
