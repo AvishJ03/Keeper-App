@@ -1,43 +1,23 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import Note from "./Note";
-import AddNote from "./AddNote";
+import Login from "./Login";
+import Home from "./Home";
 
 function App() {
-  const [notes, setNotes] = useState([]);
+  const [isLogged, setIsLogged] = useState(false);
 
-  function addNote(newTitle, newContent) {
-    const newNote = { title: newTitle, content: newContent };
-    setNotes((prevNote) => {
-      return [...prevNote, newNote];
-    });
+  function LogIn() {
+    setIsLogged(true);
   }
-
-  function deleteNote(id) {
-    setNotes((prevNotes) => {
-      return prevNotes.filter((item, index) => {
-        return index !== id;
-      });
-    });
+  function LogOut() {
+    setIsLogged(false);
   }
 
   return (
     <div>
-      <Header />
-      <AddNote onAdd={addNote} />
-      {notes.map((note, index) => {
-        return (
-          <Note
-            key={index}
-            id={index}
-            title={note.title}
-            content={note.content}
-            onDelete={deleteNote}
-          />
-        );
-      })}
-
+      <Header logged={isLogged} logout={LogOut} />
+      {isLogged ? <Home /> : <Login logged={LogIn} />}
       <Footer />
     </div>
   );
